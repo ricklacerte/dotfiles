@@ -1,24 +1,25 @@
 " Plugins (Vundle)
 set nocompatible              " be iMproved, required
 filetype off                  " required
+
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 	Plugin 'VundleVim/Vundle.vim'
 	Plugin 'lokaltog/Powerline',{'rtp': 'powerline/bindings/vim/'}
-	Plugin 'Syntastic'
-	Plugin 'valloric/youcompleteme'
-	Plugin 'scrooloose/nerdtree'
-	Plugin 'EasyMotion'
 	Plugin 'tmhedberg/SimpylFold'
+	Plugin 'Valloric/YouCompleteMe'
+	Plugin 'scrooloose/nerdtree'
+"	Plugin 'EasyMotion'
 	Plugin 'vim-scripts/indentpython.vim'
 	Plugin 'vim-syntastic/syntastic'
 	Plugin 'nvie/vim-flake8'
-	Plugin 'jistr/vim-nerdtree-tabs'
 	Plugin 'kien/ctrlp.vim'
 	Plugin 'tpope/vim-fugitive'
-	Plugin 'altercation/vim-colors-solarized'
+    Plugin 'dracula/vim'
 call vundle#end()            " required
 filetype plugin indent on    " required
+
+
 
 " Prohibit keys
 "no <down> <Nop>
@@ -26,14 +27,11 @@ filetype plugin indent on    " required
 "no <right> <Nop>
 "no <up> <Nop>
 
+
+
 "Plugin : Powerline 
 set laststatus=2
 
-"Colors
-"set t_Co=256
-set background=dark
-colorscheme ron
-highlight LineNr term=bold cterm=NONE ctermfg=Grey ctermbg=black gui=NONE guifg=DarkGrey guibg=NONE
 
 "Options:
 set nu
@@ -41,8 +39,9 @@ set number
 set numberwidth=3
 set tabstop=4
 set cindent
-"set splitbelow
+set splitbelow
 set splitright
+set clipboard=unnamed
 
 "split navigations
 nnoremap <C-J> <C-W><C-J>
@@ -72,8 +71,15 @@ au BufNewFile,BufRead *.py
 
 set encoding=utf-8
 
+"Format for Full stack files
+au BufNewFile,BufRead *.js, *.html, *.css
+    \ set tabstop=2
+    \ set softtabstop=2
+    \ set shiftwidth=2
+
 "Autocompletion
 let g:ycm_autoclose_preview_window_after_completion=1
+let g:ycm_server_python_interpreter = '/usr/bin/python3'
 map <space>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 
@@ -81,17 +87,19 @@ map <space>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 py3 << EOF
 import os
 import sys
+
 if 'VIRTUAL_ENV' in os.environ:
-	project_base_dir = os.environ['VIRTUAL_ENV']
-	activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-	execfile(activate_this, dict(__file__=activate_this))
+    project_base_dir = os.environ['VIRTUAL_ENV']
+    activate_this = os.path.join(project_base_dir, 'bin/activate')
+    exec(activate_this, dict(__file__=activate_this))
 EOF
 
 " Make the code look pretty Madafucka!
 let python_highlight_all=1
-"syntax on
+syntax on
+color dracula
 
 " Ignore .pyc
 let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 
-
+let g:SimpylFold_docstring_preview = 1
